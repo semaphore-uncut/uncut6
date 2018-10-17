@@ -9,8 +9,25 @@ blocks:
   - name: "Build"
     task:
       jobs:
-      - name: Docker build
+      - name: Install deps
         commands:
           - checkout
+          - cache restore gems
+          - bundle install -j 4 --path vendor/bundle
+          - cache store gems vendor/bundle
+
+  - name: "Test"
+    task:
+      jobs:
+      - name: RSpec 1/2
+        commands:
+          - checkout
+          - cache restore gems
+          - bundle install -j 4 --path vendor/bundle
+          - cache store gems vendor/bundle
+      - name: RSpec 2/2
+        commands:
+          - checkout
+          - cache restore gems
           - bundle install -j 4 --path vendor/bundle
           - cache store gems vendor/bundle
