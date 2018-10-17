@@ -12,9 +12,9 @@ blocks:
       - name: Install deps
         commands:
           - checkout
-          - cache restore gems-$(checksum Gemfile.lock),gems-
+          - cache restore gems-$(checksum Gemfile.lock),gems-$SEMAPHORE_GIT_BRANCH-,gems-
           - bundle install -j 4 --path vendor/bundle
-          - cache store gems-$(checksum Gemfile.lock) vendor/bundle
+          - cache store gems-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
 
   - name: "Test"
     task:
@@ -22,11 +22,11 @@ blocks:
       - name: RSpec 1/2
         commands:
           - checkout
-          - cache restore gems-$(checksum Gemfile.lock),gems-
+          - cache restore gems-$(checksum Gemfile.lock),gems-$SEMAPHORE_GIT_BRANCH-,gems-
           - bundle install -j 4 --path vendor/bundle
 
       - name: RSpec 2/2
         commands:
           - checkout
-          - cache restore gems-$(checksum Gemfile.lock),gems-
+          - cache restore gems-$(checksum Gemfile.lock),gems-$SEMAPHORE_GIT_BRANCH-,gems-
           - bundle install -j 4 --path vendor/bundle
